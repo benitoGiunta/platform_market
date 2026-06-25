@@ -6,3 +6,5 @@ export * from "./DataTable";
 export * from "./Sidebar";
 export * from "./QueryBoundary";
 export * from "./ListToolbar";
+export * from "./DetailTable";
+export * from "./Info";

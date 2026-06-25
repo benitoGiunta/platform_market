@@ -65,3 +65,27 @@ export interface MaterielVideaste {
   materiel_id: number;
   videaste_id: number;
 }
+
+// ----- Types des écrans détail (matchent les includes Prisma backend) -----
+
+export interface VideasteDetail extends Videaste {
+  materiels: { id: number; materiel: Materiel }[];
+  shootings: {
+    id: number;
+    taux_horaire_videaste: number;
+    shooting: Shooting & { client?: Client | null };
+  }[];
+}
+
+export interface ShootingDetail extends Shooting {
+  client?: Client | null;
+  videastes: { id: number; taux_horaire_videaste: number; videaste: Videaste }[];
+}
+
+export interface ClientDetail extends Client {
+  shootings: (Shooting & { videastes: { id: number; videaste: Videaste }[] })[];
+}
+
+export interface MaterielDetail extends Materiel {
+  videastes: { id: number; videaste: Videaste }[];
+}

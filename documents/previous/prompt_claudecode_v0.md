@@ -6,7 +6,7 @@
 ## Prompt
 
 ```
-Tu vas développer une application web appelée **Markyn** (nom de repo : platform_market).
+Tu vas développer une application web appelée platform_market.
 
 Voici le document de requirements complet pour la V0 :
 

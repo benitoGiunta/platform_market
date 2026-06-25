@@ -1,4 +1,4 @@
-# Contexte Projet — Markyn (platform_market)
+# Contexte Projet — platform_market
 **À coller en début de conversation pour onboarder Claude**
 
 ---
@@ -11,7 +11,7 @@ Je développe une application web. Je travaille en français.
 
 ## Le projet
 
-**Markyn** (nom de code repo : `platform_market`) est une application de gestion de flux métier pour une agence de communication vidéo. L'agence filme pour ses clients, retouche les vidéos et les publie sur Meta.
+**platform_market** est une application de gestion de flux métier pour une agence de communication vidéo. L'agence filme pour ses clients, retouche les vidéos et les publie sur Meta.
 
 ### Modules prévus (vision complète)
 1. Gestion des plannings des vidéastes

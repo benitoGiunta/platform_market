@@ -1,5 +1,5 @@
 # V0 — Liste Vidéastes & Shootings
-**Markyn (platform_market) — Juin 2026**
+**platform_market — Juin 2026**
 
 ---
 
@@ -372,4 +372,4 @@ git push origin main
 
 ---
 
-*Document de référence V0 — Markyn (platform_market)*
+*Document de référence V0 — platform_market*

@@ -7,61 +7,129 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Videaste {
-  id                  Int                @id @default(autoincrement())
-  nom                 String
-  prenom              String
-  email               String
-  telephone           String
-  statut              String // actif, inactif
-  taux_horaire        Decimal
-  materiel_entreprise Boolean
-  materiels           Materiel[]
-  shootings           ShootingVideaste[]
+// ----------------------------------------------------------------------------
+// Enums (enforced au niveau PostgreSQL)
+// ----------------------------------------------------------------------------
 
-  @@map("videaste")
+enum StatutVideaste {
+  actif
+  inactif
+}
+
+enum StatutShooting {
+  planifie
+  en_cours
+  termine
+  annule
+}
+
+enum CategorieMateriel {
+  camera
+  drone
+  trepied
+  stabilisateur
+  eclairage
+  audio
+  autre
+  entreprise
+}
+
+enum DomainMetier {
+  Retail
+  Horeca
+  Industrie
+  Services
+}
+
+// ----------------------------------------------------------------------------
+// Models
+// ----------------------------------------------------------------------------
+
+model Videaste {
+  id           Int                @id @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String?
+  telephone    String?
+  statut       StatutVideaste     @default(actif)
+  taux_horaire Decimal            @db.Decimal(10, 2)
+  materiels    MaterielVideaste[]
+  shootings    ShootingVideaste[]
+  created_at   DateTime           @default(now())
+  updated_at   DateTime           @updatedAt
+
+  @@index([statut])
 }
 
 model Materiel {
-  id          Int      @id @default(autoincrement())
-  videaste_id Int
-  categorie   String // caméra, drone, trépied, stabilisateur, éclairage, audio, autre
-  nom         String
-  videaste    Videaste @relation(fields: [videaste_id], references: [id])
+  id         Int                @id @default(autoincrement())
+  categorie  CategorieMateriel
+  nom        String
+  is_system  Boolean            @default(false)
+  videastes  MaterielVideaste[]
+  created_at DateTime           @default(now())
+  updated_at DateTime           @updatedAt
 
-  @@map("materiel")
+  @@unique([nom, is_system])
+}
+
+model MaterielVideaste {
+  id          Int      @id @default(autoincrement())
+  materiel_id Int
+  videaste_id Int
+  materiel    Materiel @relation(fields: [materiel_id], references: [id], onDelete: Cascade)
+  videaste    Videaste @relation(fields: [videaste_id], references: [id], onDelete: Cascade)
+  created_at  DateTime @default(now())
+
+  @@unique([materiel_id, videaste_id])
+  @@index([videaste_id])
+  @@index([materiel_id])
 }
 
 model Client {
-  id        Int        @id @default(autoincrement())
-  nom       String
-  shootings Shooting[]
-
-  @@map("client")
+  id             Int           @id @default(autoincrement())
+  nom            String
+  nom_legal      String?
+  adresse        String?
+  numero_tva     String?
+  domaine_metier DomainMetier?
+  date_creation  DateTime?
+  email          String?
+  telephone      String?
+  shootings      Shooting[]
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
 }
 
 model Shooting {
   id                  Int                @id @default(autoincrement())
-  client_id           Int
+  client_id           Int?
   nom                 String
-  lieu                String
-  date                DateTime           @db.Date
+  lieu                String?
+  date                DateTime
   duree               Int // en minutes
-  statut              String // planifié, en cours, terminé, annulé
-  taux_horaire_client Decimal
-  client              Client             @relation(fields: [client_id], references: [id])
+  statut              StatutShooting     @default(planifie)
+  taux_horaire_client Decimal            @db.Decimal(10, 2)
+  client              Client?            @relation(fields: [client_id], references: [id], onDelete: SetNull)
   videastes           ShootingVideaste[]
+  created_at          DateTime           @default(now())
+  updated_at          DateTime           @updatedAt
 
-  @@map("shooting")
+  @@index([date])
+  @@index([statut])
+  @@index([client_id])
 }
 
 model ShootingVideaste {
   id                    Int      @id @default(autoincrement())
   shooting_id           Int
   videaste_id           Int
-  taux_horaire_videaste Decimal
-  shooting              Shooting @relation(fields: [shooting_id], references: [id])
-  videaste              Videaste @relation(fields: [videaste_id], references: [id])
+  taux_horaire_videaste Decimal  @db.Decimal(10, 2)
+  shooting              Shooting @relation(fields: [shooting_id], references: [id], onDelete: Cascade)
+  videaste              Videaste @relation(fields: [videaste_id], references: [id], onDelete: Cascade)
+  created_at            DateTime @default(now())
 
-  @@map("shooting_videaste")
+  @@unique([shooting_id, videaste_id])
+  @@index([shooting_id])
+  @@index([videaste_id])
 }

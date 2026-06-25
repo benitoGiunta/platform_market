@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Videaste {
+  id                  Int                @id @default(autoincrement())
+  nom                 String
+  prenom              String
+  email               String
+  telephone           String
+  statut              String // actif, inactif
+  taux_horaire        Decimal
+  materiel_entreprise Boolean
+  materiels           Materiel[]
+  shootings           ShootingVideaste[]
+
+  @@map("videaste")
+}
+
+model Materiel {
+  id          Int      @id @default(autoincrement())
+  videaste_id Int
+  categorie   String // caméra, drone, trépied, stabilisateur, éclairage, audio, autre
+  nom         String
+  videaste    Videaste @relation(fields: [videaste_id], references: [id])
+
+  @@map("materiel")
+}
+
+model Client {
+  id        Int        @id @default(autoincrement())
+  nom       String
+  shootings Shooting[]
+
+  @@map("client")
+}
+
+model Shooting {
+  id                  Int                @id @default(autoincrement())
+  client_id           Int
+  nom                 String
+  lieu                String
+  date                DateTime           @db.Date
+  duree               Int // en minutes
+  statut              String // planifié, en cours, terminé, annulé
+  taux_horaire_client Decimal
+  client              Client             @relation(fields: [client_id], references: [id])
+  videastes           ShootingVideaste[]
+
+  @@map("shooting")
+}
+
+model ShootingVideaste {
+  id                    Int      @id @default(autoincrement())
+  shooting_id           Int
+  videaste_id           Int
+  taux_horaire_videaste Decimal
+  shooting              Shooting @relation(fields: [shooting_id], references: [id])
+  videaste              Videaste @relation(fields: [videaste_id], references: [id])
+
+  @@map("shooting_videaste")
+}

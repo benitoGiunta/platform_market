@@ -5,6 +5,11 @@ import morgan from "morgan";
 import { config } from "./config.js";
 import { rateLimiter } from "./middlewares/rateLimiter.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import videastesRouter from "./routes/videastes.routes.js";
+import shootingsRouter from "./routes/shootings.routes.js";
+import clientsRouter from "./routes/clients.routes.js";
+import materielsRouter from "./routes/materiels.routes.js";
+import seedRouter from "./routes/seed.routes.js";
 
 const app = express();
 
@@ -20,12 +25,12 @@ app.get("/", (_req, res) => {
   res.json({ success: true, data: { status: "ok", service: "Markyn API" } });
 });
 
-// Routes métier — montées en Phase 3
-// app.use("/api/videastes", videastesRouter);
-// app.use("/api/shootings", shootingsRouter);
-// app.use("/api/clients", clientsRouter);
-// app.use("/api/materiels", materielsRouter);
-// app.use("/api/seed", seedRouter);
+// Routes métier
+app.use("/api/videastes", videastesRouter);
+app.use("/api/shootings", shootingsRouter);
+app.use("/api/clients", clientsRouter);
+app.use("/api/materiels", materielsRouter);
+app.use("/api/seed", seedRouter);
 
 // Gestion d'erreurs — toujours en dernier.
 app.use(errorHandler);

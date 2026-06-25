@@ -2,10 +2,15 @@ import type { Request, Response, NextFunction } from "express";
 import { Prisma } from "@prisma/client";
 import { ZodError } from "zod";
 import { fail } from "../lib/reply.js";
+import { AppError } from "../lib/AppError.js";
 
 // Middleware de gestion d'erreurs centralisé — toujours en dernier dans index.ts.
 // Ne logge jamais de données utilisateur : uniquement un code/nom d'erreur.
 export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction) {
+  if (err instanceof AppError) {
+    return fail(res, err.code, err.message, err.status);
+  }
+
   if (err instanceof ZodError) {
     return fail(res, "VALIDATION", "Données invalides", 400);
   }

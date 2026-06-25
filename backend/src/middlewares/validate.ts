@@ -4,13 +4,20 @@ import xss from "xss";
 import { fail } from "../lib/reply.js";
 
 // Nettoie récursivement les strings (anti-XSS stocké).
+// On ne recurse que sur les objets *simples* (issus de JSON/Zod) — surtout pas
+// sur les instances comme Date, sinon Object.entries(date) === [] et la valeur
+// serait remplacée par {} (ce qui ferait planter Prisma).
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  if (value === null || typeof value !== "object") return false;
+  const proto = Object.getPrototypeOf(value);
+  return proto === Object.prototype || proto === null;
+}
+
 function sanitize(value: unknown): unknown {
   if (typeof value === "string") return xss(value);
   if (Array.isArray(value)) return value.map(sanitize);
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, sanitize(v)]),
-    );
+  if (isPlainObject(value)) {
+    return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, sanitize(v)]));
   }
   return value;
 }

@@ -111,6 +111,9 @@ export default function VideastesList() {
           onCancel={() => setAddOpen(false)}
           onSubmit={(data) => create.mutate(data, { onSuccess: () => setAddOpen(false) })}
         />
+        {create.isError ? (
+          <p className="mt-3 text-sm text-red-600">{(create.error as Error).message}</p>
+        ) : null}
       </Modal>
 
       <ConfirmModal

@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 // ----------------------------------------------------------------------------
 export async function resetDatabase() {
   await prisma.$executeRawUnsafe(
-    `TRUNCATE "Videaste", "Materiel", "MaterielVideaste", "Client", "Shooting", "ShootingVideaste" RESTART IDENTITY CASCADE;`
+    `TRUNCATE "Videaste", "Materiel", "MaterielVideaste", "Client", "Shooting", "ShootingVideaste" RESTART IDENTITY CASCADE;`,
   );
 }
 
@@ -48,11 +48,46 @@ export async function seedDatabase() {
 
   // --- Vidéastes ---
   const videastesData = [
-    { nom: "Bernard", prenom: "Alice", email: "alice.bernard@kyn.fr", telephone: "06 12 34 56 78", statut: "actif" as const, taux_horaire: 65 },
-    { nom: "Dubois", prenom: "Marc", email: "marc.dubois@kyn.fr", telephone: "06 23 45 67 89", statut: "actif" as const, taux_horaire: 70 },
-    { nom: "Lefevre", prenom: "Sophie", email: "sophie.lefevre@kyn.fr", telephone: "06 34 56 78 90", statut: "actif" as const, taux_horaire: 60 },
-    { nom: "Martin", prenom: "Julien", email: "julien.martin@kyn.fr", telephone: "06 45 67 89 01", statut: "inactif" as const, taux_horaire: 55 },
-    { nom: "Petit", prenom: "Camille", email: "camille.petit@kyn.fr", telephone: "06 56 78 90 12", statut: "inactif" as const, taux_horaire: 50 },
+    {
+      nom: "Bernard",
+      prenom: "Alice",
+      email: "alice.bernard@kyn.fr",
+      telephone: "06 12 34 56 78",
+      statut: "actif" as const,
+      taux_horaire: 65,
+    },
+    {
+      nom: "Dubois",
+      prenom: "Marc",
+      email: "marc.dubois@kyn.fr",
+      telephone: "06 23 45 67 89",
+      statut: "actif" as const,
+      taux_horaire: 70,
+    },
+    {
+      nom: "Lefevre",
+      prenom: "Sophie",
+      email: "sophie.lefevre@kyn.fr",
+      telephone: "06 34 56 78 90",
+      statut: "actif" as const,
+      taux_horaire: 60,
+    },
+    {
+      nom: "Martin",
+      prenom: "Julien",
+      email: "julien.martin@kyn.fr",
+      telephone: "06 45 67 89 01",
+      statut: "inactif" as const,
+      taux_horaire: 55,
+    },
+    {
+      nom: "Petit",
+      prenom: "Camille",
+      email: "camille.petit@kyn.fr",
+      telephone: "06 56 78 90 12",
+      statut: "inactif" as const,
+      taux_horaire: 50,
+    },
   ];
   const videastes: Record<string, number> = {};
   for (const v of videastesData) {
@@ -101,16 +136,96 @@ export async function seedDatabase() {
 
   // --- Shootings (statuts enum, dates passées et futures, réf. aujourd'hui = 2026-06-25) ---
   const shootingsData = [
-    { nom: "Spot pub printemps", client: "Studio Lumière", lieu: "Paris 11e", date: "2026-03-12", duree: 240, statut: "termine" as const, taux_horaire_client: 120 },
-    { nom: "Interview CEO", client: "Agence Horizon", lieu: "Lyon Part-Dieu", date: "2026-04-03", duree: 180, statut: "termine" as const, taux_horaire_client: 110 },
-    { nom: "Clip corporate", client: "Studio Lumière", lieu: "Boulogne", date: "2026-05-20", duree: 300, statut: "termine" as const, taux_horaire_client: 130 },
-    { nom: "Aftermovie événement", client: "Boutique Évasion", lieu: "Marseille Vieux-Port", date: "2026-06-10", duree: 360, statut: "termine" as const, taux_horaire_client: 125 },
-    { nom: "Tournage produit", client: "Agence Horizon", lieu: "Nantes Centre", date: "2026-06-24", duree: 120, statut: "en_cours" as const, taux_horaire_client: 100 },
-    { nom: "Reportage atelier", client: "Studio Lumière", lieu: "Lille Wazemmes", date: "2026-06-26", duree: 240, statut: "planifie" as const, taux_horaire_client: 115 },
-    { nom: "Captation conférence", client: "Agence Horizon", lieu: "Paris La Défense", date: "2026-07-08", duree: 480, statut: "planifie" as const, taux_horaire_client: 140 },
-    { nom: "Vidéo lancement", client: "Boutique Évasion", lieu: "Bordeaux Bastide", date: "2026-07-15", duree: 300, statut: "planifie" as const, taux_horaire_client: 135 },
-    { nom: "Shooting mode automne", client: "Boutique Évasion", lieu: "Cannes Croisette", date: "2026-09-02", duree: 420, statut: "planifie" as const, taux_horaire_client: 150 },
-    { nom: "Teaser annulé", client: "Studio Lumière", lieu: "Toulouse Capitole", date: "2026-05-05", duree: 0, statut: "annule" as const, taux_horaire_client: 0 },
+    {
+      nom: "Spot pub printemps",
+      client: "Studio Lumière",
+      lieu: "Paris 11e",
+      date: "2026-03-12",
+      duree: 240,
+      statut: "termine" as const,
+      taux_horaire_client: 120,
+    },
+    {
+      nom: "Interview CEO",
+      client: "Agence Horizon",
+      lieu: "Lyon Part-Dieu",
+      date: "2026-04-03",
+      duree: 180,
+      statut: "termine" as const,
+      taux_horaire_client: 110,
+    },
+    {
+      nom: "Clip corporate",
+      client: "Studio Lumière",
+      lieu: "Boulogne",
+      date: "2026-05-20",
+      duree: 300,
+      statut: "termine" as const,
+      taux_horaire_client: 130,
+    },
+    {
+      nom: "Aftermovie événement",
+      client: "Boutique Évasion",
+      lieu: "Marseille Vieux-Port",
+      date: "2026-06-10",
+      duree: 360,
+      statut: "termine" as const,
+      taux_horaire_client: 125,
+    },
+    {
+      nom: "Tournage produit",
+      client: "Agence Horizon",
+      lieu: "Nantes Centre",
+      date: "2026-06-24",
+      duree: 120,
+      statut: "en_cours" as const,
+      taux_horaire_client: 100,
+    },
+    {
+      nom: "Reportage atelier",
+      client: "Studio Lumière",
+      lieu: "Lille Wazemmes",
+      date: "2026-06-26",
+      duree: 240,
+      statut: "planifie" as const,
+      taux_horaire_client: 115,
+    },
+    {
+      nom: "Captation conférence",
+      client: "Agence Horizon",
+      lieu: "Paris La Défense",
+      date: "2026-07-08",
+      duree: 480,
+      statut: "planifie" as const,
+      taux_horaire_client: 140,
+    },
+    {
+      nom: "Vidéo lancement",
+      client: "Boutique Évasion",
+      lieu: "Bordeaux Bastide",
+      date: "2026-07-15",
+      duree: 300,
+      statut: "planifie" as const,
+      taux_horaire_client: 135,
+    },
+    {
+      nom: "Shooting mode automne",
+      client: "Boutique Évasion",
+      lieu: "Cannes Croisette",
+      date: "2026-09-02",
+      duree: 420,
+      statut: "planifie" as const,
+      taux_horaire_client: 150,
+    },
+    {
+      nom: "Teaser annulé",
+      client: "Studio Lumière",
+      lieu: "Toulouse Capitole",
+      date: "2026-05-05",
+      duree: 0,
+      statut: "annule" as const,
+      taux_horaire_client: 0,
+    },
   ];
   const shootings: number[] = [];
   for (const s of shootingsData) {

@@ -1,19 +1,35 @@
 import express from "express";
+import helmet from "helmet";
 import cors from "cors";
-import videasteRoutes from "./routes/videasteRoutes.js";
+import morgan from "morgan";
+import { config } from "./config.js";
+import { rateLimiter } from "./middlewares/rateLimiter.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
-const PORT = Number(process.env.PORT) || 3001;
 
-app.use(cors());
-app.use(express.json());
+// Ordre des middlewares — impératif.
+app.use(helmet()); // 1. Headers de sécurité
+app.use(cors({ origin: config.CORS_ORIGIN })); // 2. CORS explicite
+app.use(express.json({ limit: "10kb" })); // 3. Limite la taille des body
+app.use(morgan("[:method] :url :status :response-time ms")); // 4. Logging HTTP (sans body)
+app.use(rateLimiter); // 5. Rate limiting
 
+// Health check
 app.get("/", (_req, res) => {
-  res.json({ status: "ok", service: "platform_market API" });
+  res.json({ success: true, data: { status: "ok", service: "Markyn API" } });
 });
 
-app.use("/api/videastes", videasteRoutes);
+// Routes métier — montées en Phase 3
+// app.use("/api/videastes", videastesRouter);
+// app.use("/api/shootings", shootingsRouter);
+// app.use("/api/clients", clientsRouter);
+// app.use("/api/materiels", materielsRouter);
+// app.use("/api/seed", seedRouter);
 
-app.listen(PORT, () => {
-  console.log(`API démarrée sur http://localhost:${PORT}`);
+// Gestion d'erreurs — toujours en dernier.
+app.use(errorHandler);
+
+app.listen(config.PORT, () => {
+  console.log(`API Markyn démarrée sur http://localhost:${config.PORT}`);
 });

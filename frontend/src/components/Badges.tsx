@@ -15,10 +15,10 @@ export function StatutVideasteBadge({ statut }: { statut: string }) {
 
 // Badge de statut d'un shooting : planifié / en cours / terminé / annulé.
 const SHOOTING_STYLES: Record<string, string> = {
-  "planifié": "bg-kyn-accent text-white",
+  planifié: "bg-kyn-accent text-white",
   "en cours": "bg-amber-400 text-kyn-dark",
-  "terminé": "bg-kyn-dark text-white",
-  "annulé": "bg-gray-300 text-gray-700",
+  terminé: "bg-kyn-dark text-white",
+  annulé: "bg-gray-300 text-gray-700",
 };
 
 export function StatutShootingBadge({ statut }: { statut: string }) {

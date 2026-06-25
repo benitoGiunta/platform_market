@@ -49,6 +49,12 @@ export interface Materiel {
   _count?: { videastes: number };
 }
 
+// Shooting tel que renvoyé par la liste (avec client + count vidéastes).
+export interface ShootingWithRelations extends Shooting {
+  client?: Client | null;
+  _count?: { videastes: number };
+}
+
 export interface ShootingVideaste {
   shooting_id: number;
   videaste_id: number;

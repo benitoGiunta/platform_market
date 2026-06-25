@@ -1,17 +1,26 @@
-# platform_market
+# Markyn (platform_market)
 
-Application de gestion de flux métier pour une agence de communication vidéo.
+**Markyn** est une application de gestion de flux métier pour une agence de communication vidéo : vidéastes, shootings, clients et matériel, avec des opérations CRUD complètes et cohérentes.
 
-**V0 — Liste Vidéastes & Shootings.** Deux écrans : liste des vidéastes (`/`) et détail d'un vidéaste avec ses shootings (`/videaste/:id`).
+## Fonctionnalités (V1)
 
-## Stack
+- **Navigation permanente** : sidebar repliable (Home, Vidéastes, Shootings, Clients, Matériel) + bouton Home / Retour.
+- **CRUD complet** sur les 4 entités (ajout en popup, suppression par sélection, édition inline dans les listes, édition in-place dans les détails).
+- **Écrans détail enrichis** : blocs liés (matériel ↔ vidéaste, vidéaste ↔ shooting, client ↔ shooting) avec liaison/déliaison, liens croisés cliquables.
+- **Détail shooting** : workflow visuel 4 étapes + 3 cartes KPI (hardcodées V1, prêtes pour le calcul réel).
+- **Détail client** : 3 cartes KPI (hardcodées V1).
+- **Home** : logo + boutons « Réinitialiser la base » et « Charger le jeu de données de test ».
+- **Sécurité** : Helmet, CORS explicite, rate limiting, validation Zod + sanitisation XSS, routes seed protégées par header secret, enums et contraintes au niveau base.
+
+## Stack technique
 
 | Couche | Technologie |
 |---|---|
-| Frontend | React + TypeScript + Tailwind CSS (Vite) |
-| Backend | Node.js + Express + TypeScript |
+| Frontend | React + TypeScript + Tailwind CSS (Vite), TanStack Query, React Hook Form + Zod |
+| Backend | Node.js + Express + TypeScript (Helmet, CORS, express-rate-limit, morgan, xss) |
 | Base de données | PostgreSQL 16 (local) |
 | ORM | Prisma |
+| Qualité | ESLint + Prettier |
 
 ## Prérequis
 
@@ -19,28 +28,39 @@ Application de gestion de flux métier pour une agence de communication vidéo.
 - PostgreSQL 16 avec une base `platform_market` créée
 - pgAdmin (optionnel)
 
-## Configuration
+## Variables d'environnement
 
-Les variables d'environnement sont documentées dans [`.env.example`](.env.example).
+Toutes les variables sont documentées dans [`.env.example`](.env.example). Les fichiers `.env` réels sont exclus du dépôt via `.gitignore`.
 
-- **`backend/.env`** — `DATABASE_URL` (avec ton mot de passe Postgres) + `PORT`
-- **`frontend/.env`** — `VITE_API_URL`
+**`backend/.env`**
+```
+DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/platform_market
+PORT=3001
+CORS_ORIGIN=http://localhost:5173
+SEED_SECRET=une_cle_secrete_longue_et_aleatoire
+```
 
-Ces fichiers sont exclus du dépôt via `.gitignore`.
+**`frontend/.env`**
+```
+VITE_API_URL=http://localhost:3001
+VITE_SEED_KEY=une_cle_secrete_longue_et_aleatoire
+```
+
+> `SEED_SECRET` (backend) et `VITE_SEED_KEY` (frontend) doivent avoir **la même valeur** : elle protège les routes seed/reset, accessibles uniquement en dev local.
 
 ## Lancement
 
-### Backend
+### Backend (terminal 1)
 
 ```bash
 cd backend
 npm install
-npx prisma migrate dev      # crée les tables
-npx prisma db seed          # insère les données de test
+npx prisma migrate dev      # applique les migrations
+npx prisma db seed          # charge le jeu de données de test (idempotent)
 npm run dev                 # http://localhost:3001
 ```
 
-### Frontend
+### Frontend (terminal 2)
 
 ```bash
 cd frontend
@@ -48,9 +68,33 @@ npm install
 npm run dev                 # http://localhost:5173
 ```
 
-## APIs
+Ouvrir ensuite **http://localhost:5173**.
+
+## Scripts utiles
+
+| Commande (dans `backend/` ou `frontend/`) | Rôle |
+|---|---|
+| `npm run dev` | Démarre le serveur de dev |
+| `npm run typecheck` | Vérifie les types TypeScript |
+| `npm run lint` | ESLint |
+| `npm run format` | Formate avec Prettier |
+| `npx prisma studio` (backend) | Explore la base dans le navigateur |
+
+## APIs principales
 
 | Méthode | Route | Description |
 |---|---|---|
-| GET | `/api/videastes` | Liste des vidéastes + nombre de shootings |
-| GET | `/api/videastes/:id` | Détail d'un vidéaste avec matériel et shootings (triés par date décroissante) |
+| GET / POST | `/api/videastes` | Liste (+ count shootings) / création |
+| GET / PUT / DELETE | `/api/videastes/:id` | Détail / modification / suppression (cascade) |
+| POST / DELETE | `/api/videastes/:id/materiels[/:materielId]` | Lier / délier un matériel |
+| GET / POST | `/api/shootings` | Liste / création |
+| GET / PUT / DELETE | `/api/shootings/:id` | Détail / modification / suppression (cascade) |
+| POST / DELETE | `/api/shootings/:id/videastes[/:videasteId]` | Lier / délier un vidéaste |
+| GET / POST | `/api/clients` | Liste / création |
+| GET / PUT / DELETE | `/api/clients/:id` | Détail / modification / suppression (shootings détachés) |
+| GET / POST | `/api/materiels` | Liste / création |
+| GET / PUT / DELETE | `/api/materiels/:id` | Détail / modification / suppression |
+| POST / DELETE | `/api/materiels/:id/videastes[/:videasteId]` | Lier / délier un vidéaste |
+| POST / DELETE | `/api/seed` | Recharge / vide la base (header `x-seed-key` requis) |
+
+Format de réponse uniforme : `{ success: true, data }` ou `{ success: false, error: { code, message } }`.

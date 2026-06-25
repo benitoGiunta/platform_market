@@ -11,6 +11,10 @@ backend/node_modules/
 # Build
 frontend/dist/
 backend/dist/
+*.tsbuildinfo
+
+# Claude Code (config locale machine-spécifique)
+.claude/settings.local.json
 
 # Prisma
 backend/prisma/migrations/dev.db*

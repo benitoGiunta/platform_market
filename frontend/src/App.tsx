@@ -1,7 +1,12 @@
+import { Routes, Route } from "react-router-dom";
+import VideastesListPage from "./pages/VideastesListPage";
+import VideasteDetailPage from "./pages/VideasteDetailPage";
+
 export default function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center text-kyn-dark">
-      <p>platform_market — scaffold (les écrans arrivent en Phase 3)</p>
-    </div>
+    <Routes>
+      <Route path="/" element={<VideastesListPage />} />
+      <Route path="/videaste/:id" element={<VideasteDetailPage />} />
+    </Routes>
   );
 }

@@ -24,7 +24,7 @@ export function QueryBoundary<T>({
         <button
           type="button"
           onClick={() => query.refetch()}
-          className="mt-3 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-kyn-dark hover:bg-gray-50"
+          className="mt-3 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-primary hover:bg-gray-50"
         >
           Réessayer
         </button>

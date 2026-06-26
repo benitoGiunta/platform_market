@@ -36,7 +36,7 @@ export function DetailTable<T>({
   return (
     <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
       <table className="w-full text-left text-sm">
-        <thead className="bg-kyn-dark text-white">
+        <thead className="bg-primary text-white">
           <tr>
             {onUnlink ? <th className="w-10 px-4 py-3"></th> : null}
             {columns.map((c) => (
@@ -58,7 +58,7 @@ export function DetailTable<T>({
           {rows.map((row) => (
             <tr
               key={getId(row)}
-              className={onRowClick ? "cursor-pointer hover:bg-kyn-light/60" : ""}
+              className={onRowClick ? "cursor-pointer hover:bg-light/60" : ""}
               onClick={() => onRowClick?.(row)}
             >
               {onUnlink ? (
@@ -88,7 +88,7 @@ export function DetailTable<T>({
                 <button
                   type="button"
                   onClick={onAdd}
-                  className="text-sm font-medium text-kyn-accent hover:underline"
+                  className="text-sm font-medium text-accent hover:underline"
                 >
                   ＋ {addLabel ?? "Ajouter"}
                 </button>

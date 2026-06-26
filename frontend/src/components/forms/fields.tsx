@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 export const inputClass =
-  "w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-kyn-accent focus:outline-none";
+  "w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-accent focus:outline-none";
 
 export function Field({
   label,
@@ -14,7 +14,7 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-kyn-dark">{label}</span>
+      <span className="mb-1 block text-sm font-medium text-primary">{label}</span>
       {children}
       {error ? <span className="mt-1 block text-xs text-red-600">{error}</span> : null}
     </label>
@@ -40,7 +40,7 @@ export function FormActions({
       <button
         type="submit"
         disabled={submitting}
-        className="rounded-md bg-kyn-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
+        className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? "…" : "Enregistrer"}
       </button>

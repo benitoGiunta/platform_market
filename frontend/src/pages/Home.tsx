@@ -21,7 +21,7 @@ export default function Home() {
           alt="Markyn"
           className="h-28 w-auto object-contain"
         />
-        <h1 className="mt-3 text-3xl font-bold text-kyn-dark">Markyn</h1>
+        <h1 className="mt-3 text-3xl font-bold text-primary">Markyn</h1>
       </div>
 
       {/* Cards de redirection */}
@@ -30,10 +30,10 @@ export default function Home() {
           <Link
             key={c.to}
             to={c.to}
-            className="flex flex-col items-center gap-2 rounded-lg border border-gray-200 bg-white p-6 hover:border-kyn-accent hover:shadow"
+            className="flex flex-col items-center gap-2 rounded-lg border border-gray-200 bg-white p-6 hover:border-accent hover:shadow"
           >
             <span className="text-3xl">{c.icon}</span>
-            <span className="font-medium text-kyn-dark">{c.label}</span>
+            <span className="font-medium text-primary">{c.label}</span>
           </Link>
         ))}
       </div>
@@ -44,7 +44,7 @@ export default function Home() {
           type="button"
           onClick={() => load.mutate()}
           disabled={load.isPending}
-          className="rounded-md bg-kyn-accent px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
+          className="rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
         >
           {load.isPending ? "Chargement…" : "Charger le jeu de données de test"}
         </button>
@@ -52,7 +52,7 @@ export default function Home() {
           type="button"
           onClick={() => reset.mutate()}
           disabled={reset.isPending}
-          className="rounded-md border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-kyn-dark hover:bg-gray-50 disabled:opacity-50"
+          className="rounded-md border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-primary hover:bg-gray-50 disabled:opacity-50"
         >
           {reset.isPending ? "Réinitialisation…" : "Réinitialiser la base"}
         </button>

@@ -3,9 +3,9 @@ import { STATUT_VIDEASTE, STATUT_SHOOTING } from "../../constants/enums";
 type Tone = "accent" | "dark" | "amber" | "gray";
 
 const TONE: Record<Tone, string> = {
-  accent: "bg-kyn-accent text-white",
-  dark: "bg-kyn-dark text-white",
-  amber: "bg-amber-400 text-kyn-dark",
+  accent: "bg-accent text-white",
+  dark: "bg-primary text-white",
+  amber: "bg-amber-400 text-primary",
   gray: "bg-gray-300 text-gray-700",
 };
 

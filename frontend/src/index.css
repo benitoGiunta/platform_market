@@ -2,9 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary: #314044;
+  --color-accent: #4cc5c4;
+  --color-light: #e1e2e3;
+  --color-pause: #f59e0b;
+}
+
 body {
   margin: 0;
-  background-color: #e1e2e3;
-  color: #314044;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--color-light);
+  color: var(--color-primary);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Focus visible accessible sur tous les éléments interactifs */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }

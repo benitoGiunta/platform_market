@@ -5,7 +5,7 @@ export function BackButton({ to, label = "Retour" }: { to: string; label?: strin
   return (
     <Link
       to={to}
-      className="mb-6 inline-flex items-center text-sm font-medium text-kyn-accent hover:underline"
+      className="mb-6 inline-flex items-center text-sm font-medium text-accent hover:underline"
     >
       ← {label}
     </Link>

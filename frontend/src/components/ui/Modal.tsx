@@ -31,7 +31,7 @@ export function Modal({
         className="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {title ? <h2 className="mb-4 text-lg font-bold text-kyn-dark">{title}</h2> : null}
+        {title ? <h2 className="mb-4 text-lg font-bold text-primary">{title}</h2> : null}
         {children}
       </div>
     </div>

@@ -45,7 +45,7 @@ export default function ClientDetail() {
                 <Link
                   to={`/shootings/${s.id}`}
                   onClick={(e) => e.stopPropagation()}
-                  className="text-kyn-accent hover:underline"
+                  className="text-accent hover:underline"
                 >
                   {s.nom}
                 </Link>
@@ -63,7 +63,7 @@ export default function ClientDetail() {
                         <Link
                           to={`/videastes/${v.videaste.id}`}
                           onClick={(e) => e.stopPropagation()}
-                          className="text-kyn-accent hover:underline"
+                          className="text-accent hover:underline"
                         >
                           {v.videaste.nom} {v.videaste.prenom}
                         </Link>
@@ -91,12 +91,12 @@ export default function ClientDetail() {
               {/* Bloc infos */}
               <section className="mb-8 rounded-lg border border-gray-200 bg-white p-6">
                 <div className="mb-4 flex items-center justify-between">
-                  <h1 className="text-2xl font-bold text-kyn-dark">{c.nom}</h1>
+                  <h1 className="text-2xl font-bold text-primary">{c.nom}</h1>
                   {!editing ? (
                     <button
                       type="button"
                       onClick={() => setEditing(true)}
-                      className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-kyn-dark hover:bg-gray-50"
+                      className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-primary hover:bg-gray-50"
                     >
                       Modifier
                     </button>
@@ -138,7 +138,7 @@ export default function ClientDetail() {
               </section>
 
               {/* Shootings */}
-              <h2 className="mb-3 text-xl font-bold text-kyn-dark">Shootings</h2>
+              <h2 className="mb-3 text-xl font-bold text-primary">Shootings</h2>
               <div className="mb-8">
                 <DetailTable
                   columns={cols}
@@ -154,7 +154,7 @@ export default function ClientDetail() {
               </div>
 
               {/* KPI */}
-              <h2 className="mb-3 text-xl font-bold text-kyn-dark">Indicateurs</h2>
+              <h2 className="mb-3 text-xl font-bold text-primary">Indicateurs</h2>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <KpiCard label="Shootings & durée totale" value={KPI_SHOOTINGS} />
                 <KpiCard label="Marge brute totale" value={KPI_MARGE} />

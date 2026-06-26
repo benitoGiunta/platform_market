@@ -5,7 +5,7 @@ export function Info({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div>
       <div className="text-gray-500">{label}</div>
-      <div className="font-medium text-kyn-dark">{value}</div>
+      <div className="font-medium text-primary">{value}</div>
     </div>
   );
 }

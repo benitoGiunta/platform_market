@@ -74,7 +74,7 @@ export function DataTable<T>({
       className={`overflow-x-auto rounded-lg border border-gray-200 bg-white ${deleteMode ? "opacity-70" : ""}`}
     >
       <table className="w-full text-left text-sm">
-        <thead className="bg-kyn-dark text-white">
+        <thead className="bg-primary text-white">
           <tr>
             {deleteMode ? <th className="w-10 px-4 py-3"></th> : null}
             {columns.map((col) => (
@@ -94,9 +94,7 @@ export function DataTable<T>({
               <tr
                 key={id}
                 className={
-                  !deleteMode && !isEditing && onRowClick
-                    ? "cursor-pointer hover:bg-kyn-light/60"
-                    : ""
+                  !deleteMode && !isEditing && onRowClick ? "cursor-pointer hover:bg-light/60" : ""
                 }
                 onClick={() => {
                   if (deleteMode || isEditing) return;
@@ -155,7 +153,7 @@ export function DataTable<T>({
                           aria-label="Sauvegarder"
                           disabled={editLoading}
                           onClick={() => saveEdit(id)}
-                          className="rounded bg-kyn-accent px-2 py-1 text-white disabled:opacity-50"
+                          className="rounded bg-accent px-2 py-1 text-white disabled:opacity-50"
                         >
                           ✓
                         </button>
@@ -174,7 +172,7 @@ export function DataTable<T>({
                         aria-label="Éditer"
                         disabled={deleteMode}
                         onClick={() => startEdit(row)}
-                        className="rounded px-2 py-1 text-kyn-dark hover:bg-gray-100 disabled:opacity-40"
+                        className="rounded px-2 py-1 text-primary hover:bg-gray-100 disabled:opacity-40"
                       >
                         ✎
                       </button>

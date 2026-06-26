@@ -70,7 +70,7 @@ export default function VideasteDetail() {
                   <Link
                     to={`/clients/${r.shooting.client.id}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="text-kyn-accent hover:underline"
+                    className="text-accent hover:underline"
                   >
                     {r.shooting.client.nom}
                   </Link>
@@ -104,14 +104,14 @@ export default function VideasteDetail() {
               {/* Bloc infos */}
               <section className="mb-8 rounded-lg border border-gray-200 bg-white p-6">
                 <div className="mb-4 flex items-center justify-between">
-                  <h1 className="text-2xl font-bold text-kyn-dark">
+                  <h1 className="text-2xl font-bold text-primary">
                     {v.nom} {v.prenom}
                   </h1>
                   {!editing ? (
                     <button
                       type="button"
                       onClick={() => setEditing(true)}
-                      className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-kyn-dark hover:bg-gray-50"
+                      className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-primary hover:bg-gray-50"
                     >
                       Modifier
                     </button>
@@ -142,7 +142,7 @@ export default function VideasteDetail() {
               </section>
 
               {/* Matériel */}
-              <h2 className="mb-3 text-xl font-bold text-kyn-dark">Matériel</h2>
+              <h2 className="mb-3 text-xl font-bold text-primary">Matériel</h2>
               <div className="mb-8">
                 <DetailTable
                   columns={matCols}
@@ -159,7 +159,7 @@ export default function VideasteDetail() {
               </div>
 
               {/* Shootings */}
-              <h2 className="mb-3 text-xl font-bold text-kyn-dark">Shootings</h2>
+              <h2 className="mb-3 text-xl font-bold text-primary">Shootings</h2>
               <DetailTable
                 columns={shootCols}
                 rows={v.shootings}
@@ -204,7 +204,7 @@ export default function VideasteDetail() {
                         },
                       })
                     }
-                    className="rounded-md bg-kyn-accent px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+                    className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
                   >
                     Ajouter
                   </button>
@@ -247,7 +247,7 @@ export default function VideasteDetail() {
                         },
                       )
                     }
-                    className="rounded-md bg-kyn-accent px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+                    className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
                   >
                     Ajouter
                   </button>

@@ -19,7 +19,7 @@ export function ConfirmModal({
 }) {
   return (
     <Modal open={open} onClose={onClose} title={title}>
-      <p className="text-sm text-kyn-dark">{message}</p>
+      <p className="text-sm text-primary">{message}</p>
       <div className="mt-6 flex justify-end gap-3">
         <button
           type="button"

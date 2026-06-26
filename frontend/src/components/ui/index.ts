@@ -17,3 +17,4 @@ export * from "./InfoDetailBlock";
 export * from "./DonutChart";
 export * from "./WorkflowBar";
 export * from "./Toast";
+export * from "./AppShell";

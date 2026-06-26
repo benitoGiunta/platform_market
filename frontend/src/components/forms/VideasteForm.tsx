@@ -1,7 +1,8 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Field, FormActions, inputClass } from "./fields";
+import { SelectInput } from "../ui/SelectInput";
 import { STATUT_VIDEASTE } from "../../constants/enums";
 
 const schema = z.object({
@@ -14,6 +15,8 @@ const schema = z.object({
 });
 
 export type VideasteFormValues = z.infer<typeof schema>;
+
+const statutOptions = Object.entries(STATUT_VIDEASTE).map(([value, label]) => ({ value, label }));
 
 export function VideasteForm({
   defaultValues,
@@ -29,6 +32,7 @@ export function VideasteForm({
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<VideasteFormValues>({
     resolver: zodResolver(schema),
@@ -58,13 +62,18 @@ export function VideasteForm({
         <input className={inputClass} {...register("telephone")} />
       </Field>
       <Field label="Statut" error={errors.statut?.message}>
-        <select className={inputClass} {...register("statut")}>
-          {Object.entries(STATUT_VIDEASTE).map(([v, l]) => (
-            <option key={v} value={v}>
-              {l}
-            </option>
-          ))}
-        </select>
+        <Controller
+          name="statut"
+          control={control}
+          render={({ field }) => (
+            <SelectInput
+              inputId="statut"
+              value={field.value}
+              onChange={field.onChange}
+              options={statutOptions}
+            />
+          )}
+        />
       </Field>
       <Field label="Taux horaire (€/h)" error={errors.taux_horaire?.message}>
         <input

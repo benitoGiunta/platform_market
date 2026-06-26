@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Layout } from "./components/Layout";
+import { AppShell } from "./components/ui/AppShell";
 import Home from "./pages/Home";
 import VideastesList from "./pages/videastes/VideastesList";
 import VideasteDetail from "./pages/videastes/VideasteDetail";
@@ -13,7 +13,7 @@ import MaterielDetail from "./pages/materiels/MaterielDetail";
 export default function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route element={<AppShell />}>
         <Route path="/" element={<Home />} />
         <Route path="/videastes" element={<VideastesList />} />
         <Route path="/videastes/:id" element={<VideasteDetail />} />

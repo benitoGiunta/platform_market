@@ -1,7 +1,8 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Field, FormActions, inputClass } from "./fields";
+import { SelectInput } from "../ui/SelectInput";
 import { STATUT_SHOOTING } from "../../constants/enums";
 import { useClients } from "../../hooks/useClients";
 
@@ -27,6 +28,8 @@ export interface ShootingInput {
   taux_horaire_client: number;
 }
 
+const statutOptions = Object.entries(STATUT_SHOOTING).map(([value, label]) => ({ value, label }));
+
 export function ShootingForm({
   defaultValues,
   submitting,
@@ -39,11 +42,12 @@ export function ShootingForm({
   onCancel: () => void;
 }) {
   const { list } = useClients();
-  const clients = list.data ?? [];
+  const clientOptions = (list.data ?? []).map((c) => ({ value: String(c.id), label: c.nom }));
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<ShootingFormValues>({
     resolver: zodResolver(schema),
@@ -68,14 +72,20 @@ export function ShootingForm({
         <input className={inputClass} {...register("nom")} />
       </Field>
       <Field label="Client" error={errors.client_id?.message}>
-        <select className={inputClass} {...register("client_id")}>
-          <option value="">—</option>
-          {clients.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.nom}
-            </option>
-          ))}
-        </select>
+        <Controller
+          name="client_id"
+          control={control}
+          render={({ field }) => (
+            <SelectInput
+              inputId="client_id"
+              value={field.value}
+              onChange={field.onChange}
+              options={clientOptions}
+              placeholder="— Aucun —"
+              isClearable
+            />
+          )}
+        />
       </Field>
       <Field label="Lieu" error={errors.lieu?.message}>
         <input className={inputClass} {...register("lieu")} />
@@ -91,13 +101,18 @@ export function ShootingForm({
         />
       </Field>
       <Field label="Statut" error={errors.statut?.message}>
-        <select className={inputClass} {...register("statut")}>
-          {Object.entries(STATUT_SHOOTING).map(([v, l]) => (
-            <option key={v} value={v}>
-              {l}
-            </option>
-          ))}
-        </select>
+        <Controller
+          name="statut"
+          control={control}
+          render={({ field }) => (
+            <SelectInput
+              inputId="statut"
+              value={field.value}
+              onChange={field.onChange}
+              options={statutOptions}
+            />
+          )}
+        />
       </Field>
       <Field label="Taux horaire client (€/h)" error={errors.taux_horaire_client?.message}>
         <input

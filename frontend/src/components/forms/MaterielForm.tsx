@@ -1,7 +1,8 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Field, FormActions, inputClass } from "./fields";
+import { SelectInput } from "../ui/SelectInput";
 import { CATEGORIE_MATERIEL } from "../../constants/enums";
 
 const schema = z.object({
@@ -20,6 +21,11 @@ const schema = z.object({
 
 export type MaterielFormValues = z.infer<typeof schema>;
 
+const categorieOptions = Object.entries(CATEGORIE_MATERIEL).map(([value, label]) => ({
+  value,
+  label,
+}));
+
 export function MaterielForm({
   defaultValues,
   submitting,
@@ -34,6 +40,7 @@ export function MaterielForm({
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<MaterielFormValues>({
     resolver: zodResolver(schema),
@@ -43,13 +50,18 @@ export function MaterielForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <Field label="Catégorie" error={errors.categorie?.message}>
-        <select className={inputClass} {...register("categorie")}>
-          {Object.entries(CATEGORIE_MATERIEL).map(([v, l]) => (
-            <option key={v} value={v}>
-              {l}
-            </option>
-          ))}
-        </select>
+        <Controller
+          name="categorie"
+          control={control}
+          render={({ field }) => (
+            <SelectInput
+              inputId="categorie"
+              value={field.value}
+              onChange={field.onChange}
+              options={categorieOptions}
+            />
+          )}
+        />
       </Field>
       <Field label="Nom" error={errors.nom?.message}>
         <input className={inputClass} {...register("nom")} />

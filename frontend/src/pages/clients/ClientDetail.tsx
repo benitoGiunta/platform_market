@@ -113,6 +113,7 @@ export default function ClientDetail() {
                       date_creation: c.date_creation ? c.date_creation.slice(0, 10) : "",
                       email: c.email ?? "",
                       telephone: c.telephone ?? "",
+                      site_web: c.site_web ?? "",
                     }}
                     submitting={update.isPending}
                     onCancel={() => setEditing(false)}

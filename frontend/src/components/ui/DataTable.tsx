@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { SelectInput } from "./SelectInput";
 
 export interface Column<T> {
   key: string;
@@ -115,18 +116,13 @@ export function DataTable<T>({
                   <td key={col.key} className={`px-4 py-3 ${alignClass(col.align)}`}>
                     {isEditing && col.editable ? (
                       col.editType === "select" ? (
-                        <select
-                          className="w-full rounded border border-gray-300 px-2 py-1"
-                          value={draft[col.key] ?? ""}
-                          onClick={(e) => e.stopPropagation()}
-                          onChange={(e) => setDraft({ ...draft, [col.key]: e.target.value })}
-                        >
-                          {col.options?.map((o) => (
-                            <option key={o.value} value={o.value}>
-                              {o.label}
-                            </option>
-                          ))}
-                        </select>
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <SelectInput
+                            value={draft[col.key] ?? ""}
+                            onChange={(v) => setDraft({ ...draft, [col.key]: v })}
+                            options={col.options ?? []}
+                          />
+                        </div>
                       ) : (
                         <input
                           type={col.editType === "number" ? "number" : "text"}

@@ -7,8 +7,18 @@ import { ListToolbar } from "../../components/ui/ListToolbar";
 import { Modal } from "../../components/ui/Modal";
 import { ConfirmModal } from "../../components/ui/ConfirmModal";
 import { ClientForm } from "../../components/forms/ClientForm";
+import { ContactLink, type ContactType } from "../../components/ui/ContactLink";
 import { DOMAINE_METIER } from "../../constants/enums";
 import type { Client } from "../../types";
+
+const contactCell = (type: ContactType, value?: string | null) =>
+  value ? (
+    <span onClick={(e) => e.stopPropagation()}>
+      <ContactLink type={type} value={value} />
+    </span>
+  ) : (
+    "—"
+  );
 
 const domaineOptions = Object.entries(DOMAINE_METIER).map(([value, label]) => ({ value, label }));
 
@@ -32,8 +42,24 @@ export default function ClientsList() {
       editValue: (c) => c.domaine_metier ?? "",
       render: (c) => c.domaine_metier ?? "—",
     },
-    { key: "email", header: "Email", editable: true, render: (c) => c.email ?? "—" },
-    { key: "telephone", header: "Téléphone", editable: true, render: (c) => c.telephone ?? "—" },
+    {
+      key: "email",
+      header: "Email",
+      editable: true,
+      render: (c) => contactCell("email", c.email),
+    },
+    {
+      key: "telephone",
+      header: "Téléphone",
+      editable: true,
+      render: (c) => contactCell("tel", c.telephone),
+    },
+    {
+      key: "site_web",
+      header: "Site web",
+      editable: true,
+      render: (c) => contactCell("web", c.site_web),
+    },
     {
       key: "nombre_shootings",
       header: "Nb shootings",
@@ -51,6 +77,7 @@ export default function ClientsList() {
         domaine_metier: v.domaine_metier || null,
         email: v.email,
         telephone: v.telephone,
+        site_web: v.site_web,
       },
     });
 

@@ -5,6 +5,8 @@ export interface InfoField {
   label: string;
   value: string | null;
   type?: "text" | ContactType;
+  // Rendu personnalisé (ex. lien interne) — prioritaire sur value/type.
+  node?: ReactNode;
 }
 
 // Visuel "info détail" : grand nom (Syne) à gauche sur fond primary, grille label/valeur à droite.
@@ -44,7 +46,9 @@ export function InfoDetailBlock({
                 {f.label}
               </dt>
               <dd className="text-sm text-primary">
-                {f.value == null || f.value === "" ? (
+                {f.node != null ? (
+                  f.node
+                ) : f.value == null || f.value === "" ? (
                   "—"
                 ) : f.type && f.type !== "text" ? (
                   <ContactLink type={f.type} value={f.value} />

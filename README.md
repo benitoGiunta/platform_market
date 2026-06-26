@@ -12,11 +12,21 @@
 - **Home** : logo + boutons « Réinitialiser la base » et « Charger le jeu de données de test ».
 - **Sécurité** : Helmet, CORS explicite, rate limiting, validation Zod + sanitisation XSS, routes seed protégées par header secret, enums et contraintes au niveau base.
 
+## Nouveautés V2
+
+- **UX/UI moderne** : layout `AppShell` (topbar `#314044` + sidebar `#4cc5c4`), police **Syne**, transitions de page (Framer Motion), animation d'intro (une fois par session), skeletons de chargement, toasts de feedback.
+- **Workflow shooting interactif** : 6 étapes (Script → Planifié → Tournage → Montage → Révision → Terminé), curseur **drag-and-drop** (@dnd-kit) + mise en **pause/reprise** (transaction atomique côté backend).
+- **KPI financiers réels** : marge brute, coûts, bénéfice net calculés côté backend (`utils/kpi.ts`) et affichés en **donut chart** (Recharts) sur les détails shooting et client.
+- **Liens de contact cliquables** (`ContactLink`) : téléphone, email, site web, adresse (→ Google Maps).
+- **Design tokens centralisés** dans `tailwind.config.js` (`primary/accent/light/pause/danger`) — aucune couleur hardcodée dans le JSX.
+
+> Données de démo : utiliser les boutons **« Charger le jeu de données »** / **« Réinitialiser la base »** sur l'écran d'accueil.
+
 ## Stack technique
 
 | Couche | Technologie |
 |---|---|
-| Frontend | React + TypeScript + Tailwind CSS (Vite), TanStack Query, React Hook Form + Zod |
+| Frontend | React + TypeScript + Tailwind CSS (Vite), TanStack Query, React Hook Form + Zod, Framer Motion, Recharts, React Select, @dnd-kit, Lucide |
 | Backend | Node.js + Express + TypeScript (Helmet, CORS, express-rate-limit, morgan, xss) |
 | Base de données | PostgreSQL 16 (local) |
 | ORM | Prisma |

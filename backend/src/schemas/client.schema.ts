@@ -9,6 +9,7 @@ export const clientCreateSchema = z.object({
   date_creation: z.coerce.date().nullable().optional(),
   email: z.string().email("Email invalide").optional().or(z.literal("")),
   telephone: z.string().optional().or(z.literal("")),
+  site_web: z.string().optional().or(z.literal("")),
 });
 
 export const clientUpdateSchema = clientCreateSchema.partial();

@@ -1,5 +1,8 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "../lib/prisma.js";
 import { BaseService } from "./base.service.js";
+import { calculateShootingKpi } from "../utils/kpi.js";
+import { notFound } from "../lib/AppError.js";
 
 class ShootingsService extends BaseService {
   constructor() {
@@ -14,14 +17,50 @@ class ShootingsService extends BaseService {
     });
   }
 
-  // Détail + client + vidéastes liés.
-  findById(id: number) {
-    return prisma.shooting.findUnique({
+  // Détail + client + vidéastes liés + KPI financier réel.
+  async findById(id: number) {
+    const shooting = await prisma.shooting.findUnique({
       where: { id },
       include: {
         client: true,
         videastes: { include: { videaste: true } },
       },
+    });
+    if (!shooting) return null;
+    return { ...shooting, kpi: calculateShootingKpi(shooting) };
+  }
+
+  // MAJ — gère pause/reprise en transaction atomique (serveur autoritaire).
+  async update(id: number, data: Record<string, unknown>) {
+    if (data.is_paused === true) {
+      return prisma.$transaction(async (tx) => {
+        const current = await tx.shooting.findUnique({ where: { id } });
+        if (!current) throw notFound("Shooting introuvable");
+        return tx.shooting.update({
+          where: { id },
+          data: { is_paused: true, statut_avant_pause: current.statut },
+        });
+      });
+    }
+
+    if (data.is_paused === false) {
+      return prisma.$transaction(async (tx) => {
+        const current = await tx.shooting.findUnique({ where: { id } });
+        if (!current) throw notFound("Shooting introuvable");
+        return tx.shooting.update({
+          where: { id },
+          data: {
+            is_paused: false,
+            statut: current.statut_avant_pause ?? current.statut,
+            statut_avant_pause: null,
+          },
+        });
+      });
+    }
+
+    return prisma.shooting.update({
+      where: { id },
+      data: data as Prisma.ShootingUpdateInput,
     });
   }
 

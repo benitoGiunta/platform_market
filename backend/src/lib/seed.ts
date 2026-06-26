@@ -100,6 +100,7 @@ export async function seedDatabase() {
       date_creation: new Date("2021-04-15"),
       email: "contact@studiolumiere.fr",
       telephone: "01 23 45 67 89",
+      site_web: "https://studiolumiere.fr",
     },
     {
       nom: "Agence Horizon",
@@ -110,6 +111,7 @@ export async function seedDatabase() {
       date_creation: new Date("2019-09-01"),
       email: "hello@agencehorizon.fr",
       telephone: "02 40 11 22 33",
+      site_web: "https://agencehorizon.fr",
     },
     {
       nom: "Boutique Évasion",
@@ -120,6 +122,7 @@ export async function seedDatabase() {
       date_creation: new Date("2022-01-20"),
       email: "info@boutique-evasion.fr",
       telephone: "04 93 99 88 77",
+      site_web: "https://boutique-evasion.fr",
     },
   ];
   const clients: Record<string, number> = {};
@@ -128,7 +131,8 @@ export async function seedDatabase() {
     clients[c.nom] = created.id;
   }
 
-  // --- Shootings (statuts enum, dates passées et futures, réf. aujourd'hui = 2026-06-25) ---
+  // --- Shootings (statuts répartis sur les 6 étapes V2 ; un shooting en pause) ---
+  // Mapping V1->V2 : en_cours->tournage, annule->termine ; ajout script/montage/revision.
   const shootingsData = [
     {
       nom: "Spot pub printemps",
@@ -137,6 +141,8 @@ export async function seedDatabase() {
       date: "2026-03-12",
       duree: 240,
       statut: "termine" as const,
+      is_paused: false,
+      statut_avant_pause: null as "tournage" | null,
       taux_horaire_client: 120,
     },
     {
@@ -146,6 +152,8 @@ export async function seedDatabase() {
       date: "2026-04-03",
       duree: 180,
       statut: "termine" as const,
+      is_paused: false,
+      statut_avant_pause: null as "tournage" | null,
       taux_horaire_client: 110,
     },
     {
@@ -154,7 +162,9 @@ export async function seedDatabase() {
       lieu: "Boulogne",
       date: "2026-05-20",
       duree: 300,
-      statut: "termine" as const,
+      statut: "montage" as const,
+      is_paused: false,
+      statut_avant_pause: null as "tournage" | null,
       taux_horaire_client: 130,
     },
     {
@@ -163,7 +173,9 @@ export async function seedDatabase() {
       lieu: "Marseille Vieux-Port",
       date: "2026-06-10",
       duree: 360,
-      statut: "termine" as const,
+      statut: "revision" as const,
+      is_paused: false,
+      statut_avant_pause: null as "tournage" | null,
       taux_horaire_client: 125,
     },
     {
@@ -172,7 +184,9 @@ export async function seedDatabase() {
       lieu: "Nantes Centre",
       date: "2026-06-24",
       duree: 120,
-      statut: "en_cours" as const,
+      statut: "tournage" as const,
+      is_paused: true,
+      statut_avant_pause: "tournage" as "tournage" | null,
       taux_horaire_client: 100,
     },
     {
@@ -182,6 +196,8 @@ export async function seedDatabase() {
       date: "2026-06-26",
       duree: 240,
       statut: "planifie" as const,
+      is_paused: false,
+      statut_avant_pause: null as "tournage" | null,
       taux_horaire_client: 115,
     },
     {
@@ -190,7 +206,9 @@ export async function seedDatabase() {
       lieu: "Paris La Défense",
       date: "2026-07-08",
       duree: 480,
-      statut: "planifie" as const,
+      statut: "script" as const,
+      is_paused: false,
+      statut_avant_pause: null as "tournage" | null,
       taux_horaire_client: 140,
     },
     {
@@ -200,6 +218,8 @@ export async function seedDatabase() {
       date: "2026-07-15",
       duree: 300,
       statut: "planifie" as const,
+      is_paused: false,
+      statut_avant_pause: null as "tournage" | null,
       taux_horaire_client: 135,
     },
     {
@@ -208,17 +228,21 @@ export async function seedDatabase() {
       lieu: "Cannes Croisette",
       date: "2026-09-02",
       duree: 420,
-      statut: "planifie" as const,
+      statut: "script" as const,
+      is_paused: false,
+      statut_avant_pause: null as "tournage" | null,
       taux_horaire_client: 150,
     },
     {
-      nom: "Teaser annulé",
+      nom: "Teaser produit",
       client: "Studio Lumière",
       lieu: "Toulouse Capitole",
       date: "2026-05-05",
-      duree: 0,
-      statut: "annule" as const,
-      taux_horaire_client: 0,
+      duree: 90,
+      statut: "termine" as const,
+      is_paused: false,
+      statut_avant_pause: null as "tournage" | null,
+      taux_horaire_client: 90,
     },
   ];
   const shootings: number[] = [];
@@ -230,6 +254,8 @@ export async function seedDatabase() {
         date: new Date(s.date),
         duree: s.duree,
         statut: s.statut,
+        is_paused: s.is_paused,
+        statut_avant_pause: s.statut_avant_pause,
         taux_horaire_client: s.taux_horaire_client,
         client: { connect: { id: clients[s.client] } },
       },

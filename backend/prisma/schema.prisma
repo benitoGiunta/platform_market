@@ -17,10 +17,12 @@ enum StatutVideaste {
 }
 
 enum StatutShooting {
+  script
   planifie
-  en_cours
+  tournage
+  montage
+  revision
   termine
-  annule
 }
 
 enum CategorieMateriel {
@@ -96,6 +98,7 @@ model Client {
   date_creation  DateTime?
   email          String?
   telephone      String?
+  site_web       String?
   shootings      Shooting[]
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
@@ -108,7 +111,9 @@ model Shooting {
   lieu                String?
   date                DateTime
   duree               Int // en minutes
-  statut              StatutShooting     @default(planifie)
+  statut              StatutShooting     @default(script)
+  is_paused           Boolean            @default(false)
+  statut_avant_pause  StatutShooting? // null si pas en pause
   taux_horaire_client Decimal            @db.Decimal(10, 2)
   client              Client?            @relation(fields: [client_id], references: [id], onDelete: SetNull)
   videastes           ShootingVideaste[]

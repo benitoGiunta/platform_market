@@ -2,10 +2,12 @@
 export const STATUT_VIDEASTE = { actif: "Actif", inactif: "Inactif" } as const;
 
 export const STATUT_SHOOTING = {
+  script: "Script",
   planifie: "Planifié",
-  en_cours: "En cours",
+  tournage: "Tournage",
+  montage: "Montage",
+  revision: "Révision",
   termine: "Terminé",
-  annule: "Annulé",
 } as const;
 
 export const CATEGORIE_MATERIEL = {

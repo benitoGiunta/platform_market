@@ -27,10 +27,12 @@ export function StatutVideasteBadge({ statut }: { statut: keyof typeof STATUT_VI
 }
 
 const SHOOTING_TONE: Record<keyof typeof STATUT_SHOOTING, Tone> = {
+  script: "gray",
   planifie: "accent",
-  en_cours: "amber",
+  tournage: "accent",
+  montage: "amber",
+  revision: "amber",
   termine: "dark",
-  annule: "gray",
 };
 
 export function StatutShootingBadge({ statut }: { statut: keyof typeof STATUT_SHOOTING }) {

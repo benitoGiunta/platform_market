@@ -11,7 +11,7 @@ const schema = z.object({
   lieu: z.string(),
   date: z.string().min(1, "Date requise"),
   duree: z.number().int().nonnegative("Invalide"),
-  statut: z.enum(["planifie", "en_cours", "termine", "annule"]),
+  statut: z.enum(["script", "planifie", "tournage", "montage", "revision", "termine"]),
   taux_horaire_client: z.number().nonnegative("Invalide"),
 });
 
@@ -53,7 +53,7 @@ export function ShootingForm({
       lieu: "",
       date: "",
       duree: 0,
-      statut: "planifie",
+      statut: "script",
       taux_horaire_client: 0,
       ...defaultValues,
     },

@@ -1,3 +1,11 @@
+export type StatutShooting =
+  | "script"
+  | "planifie"
+  | "tournage"
+  | "montage"
+  | "revision"
+  | "termine";
+
 export interface Videaste {
   id: number;
   nom: string;
@@ -21,6 +29,7 @@ export interface Client {
   date_creation?: string | null;
   email?: string | null;
   telephone?: string | null;
+  site_web?: string | null;
   created_at: string;
   updated_at: string;
   _count?: { shootings: number };
@@ -33,7 +42,9 @@ export interface Shooting {
   lieu?: string | null;
   date: string;
   duree: number;
-  statut: "planifie" | "en_cours" | "termine" | "annule";
+  statut: StatutShooting;
+  is_paused: boolean;
+  statut_avant_pause: StatutShooting | null;
   taux_horaire_client: number;
   created_at: string;
   updated_at: string;
@@ -66,6 +77,23 @@ export interface MaterielVideaste {
   videaste_id: number;
 }
 
+// ----- KPI (calculés côté backend) -----
+
+export interface ShootingKpi {
+  duree_heures: number;
+  marge_brute: number;
+  couts: number;
+  benefice_net: number;
+}
+
+export interface ClientKpi {
+  nb_shootings: number;
+  duree_totale_heures: number;
+  marge_brute_totale: number;
+  couts_totaux: number;
+  benefice_total: number;
+}
+
 // ----- Types des écrans détail (matchent les includes Prisma backend) -----
 
 export interface VideasteDetail extends Videaste {
@@ -80,10 +108,12 @@ export interface VideasteDetail extends Videaste {
 export interface ShootingDetail extends Shooting {
   client?: Client | null;
   videastes: { id: number; taux_horaire_videaste: number; videaste: Videaste }[];
+  kpi: ShootingKpi;
 }
 
 export interface ClientDetail extends Client {
   shootings: (Shooting & { videastes: { id: number; videaste: Videaste }[] })[];
+  kpi: ClientKpi;
 }
 
 export interface MaterielDetail extends Materiel {
